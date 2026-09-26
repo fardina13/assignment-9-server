@@ -21,10 +21,29 @@ const client = new MongoClient(uri);
 const db = client.db("assignment-9");
 const carCollection = db.collection("cars");
 
-app.get('/car', async(req, res)=>{
-  const result = await carCollection.find().toArray();
-  res.json(result);
-})
+app.get('/car', async (req, res) => {
+    const { search, category } = req.query;
+
+    const query = {};
+
+    if (search) {
+        query.carName = {
+            $regex: search,
+            $options: "i"
+        };
+    }
+
+    if (category) {
+        query.category = {
+            $regex: `^${category}$`,
+            $options: "i"
+        };
+    }
+
+    const cars = await carCollection.find(query).toArray();
+
+    res.json(cars);
+});
 
 app.post('/car', async(req, res)=>{
   const carData = req.body;

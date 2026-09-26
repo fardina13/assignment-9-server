@@ -4,7 +4,7 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 dotenv.config();
 
 const app = express();
@@ -21,10 +21,20 @@ const client = new MongoClient(uri);
 const db = client.db("assignment-9");
 const carCollection = db.collection("cars");
 
+app.get('/car', async(req, res)=>{
+  const result = await carCollection.find().toArray();
+  res.json(result);
+})
+
 app.post('/car', async(req, res)=>{
   const carData = req.body;
   console.log(carData);
   const result = await carCollection.insertOne(carData);
+  res.json(result);
+})
+app.get('/car/:id', async(req, res)=>{
+  const {id} = req.params;
+  const result = await carCollection.findOne({_id: new ObjectId(id)});
   res.json(result);
 })
 

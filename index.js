@@ -20,6 +20,7 @@ const client = new MongoClient(uri);
 
 const db = client.db("assignment-9");
 const carCollection = db.collection("cars");
+const bookingCollection = db.collection("bookings");
 
 app.get('/car', async (req, res) => {
     const { search, category } = req.query;
@@ -61,11 +62,23 @@ app.post('/car', async(req, res)=>{
   const result = await carCollection.insertOne(carData);
   res.json(result);
 })
+app.post('/booking', async (req, res) => {
+    const bookingData = req.body;
+
+    console.log(bookingData);
+
+    const result = await bookingCollection.insertOne(bookingData);
+
+    res.json(result);
+})
 app.get('/car/:id', async(req, res)=>{
   const {id} = req.params;
   const result = await carCollection.findOne({_id: new ObjectId(id)});
   res.json(result);
 })
+
+
+
 
 async function connectToMongoDB() {
     try {

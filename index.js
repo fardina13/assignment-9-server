@@ -71,13 +71,30 @@ app.post('/booking', async (req, res) => {
 
     res.json(result);
 })
+
+app.get('/booking', async (req, res) => {
+    const { userId } = req.query;
+
+    const bookings = await bookingCollection
+        .find({ userId })
+        .toArray();
+
+    res.json(bookings);
+});
+app.delete('/booking/:id', async (req, res) => {
+    const { id } = req.params;
+
+    const result = await bookingCollection.deleteOne({
+        _id: new ObjectId(id)
+    });
+
+    res.json(result);
+});
 app.get('/car/:id', async(req, res)=>{
   const {id} = req.params;
   const result = await carCollection.findOne({_id: new ObjectId(id)});
   res.json(result);
 })
-
-
 
 
 async function connectToMongoDB() {

@@ -51,7 +51,10 @@ const verifyToken = async(req, res, next)=>{
         });
     }
 }
-
+app.get('/featured', async (req,res)=>{
+    const result = await carCollection.find().limit(3).toArray();
+    res.json(result);
+})
 app.get('/car', async (req, res) => {
     const { search, category } = req.query;
 
@@ -92,7 +95,7 @@ app.post('/car', async(req, res)=>{
   const result = await carCollection.insertOne(carData);
   res.json(result);
 })
-app.post('/booking', async (req, res) => {
+app.post('/booking', verifyToken, async (req, res) => {
     const bookingData = req.body;
 
     console.log(bookingData);
@@ -111,7 +114,7 @@ app.get('/booking', async (req, res) => {
 
     res.json(bookings);
 });
-app.delete('/booking/:id', async (req, res) => {
+app.delete('/booking/:id', verifyToken, async (req, res) => {
     const { id } = req.params;
 
     const result = await bookingCollection.deleteOne({

@@ -2,16 +2,9 @@
   "version": 2,
   "regions": ["sin1"],
   "builds": [
-    {
-      "src": "index.js",
-      "use": "@vercel/node"
-    }
+    { "src": "index.js", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "source": "/(.*)",
-      "destination": "index.js",
-      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS" ]
-    }
+    { "src": "/(.*)", "dest": "index.js" }
   ]
 }

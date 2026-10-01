@@ -133,7 +133,8 @@ app.get('/car/:id', verifyToken, async(req, res)=>{
 
 async function connectToMongoDB() {
     try {
-        await client.connect();
+        // await client.connect();
+        module.exports = app;
         console.log("You successfully connected to MongoDB!");
 
         app.listen(PORT, () => {

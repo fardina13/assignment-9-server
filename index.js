@@ -24,7 +24,7 @@ const carCollection = db.collection("cars");
 const bookingCollection = db.collection("bookings");
 
 const JWKS = createRemoteJWKSet(
-    new URL("http://localhost:3000/api/auth/jwks")
+    new URL(`${process.env.CLIENT_URL}/api/auth/jwks`)
 )
 
 const verifyToken = async(req, res, next)=>{
@@ -105,7 +105,7 @@ app.post('/booking', verifyToken, async (req, res) => {
     res.json(result);
 })
 
-app.get('/booking', async (req, res) => {
+app.get('/booking', verifyToken, async (req, res) => {
     const { userId } = req.query;
 
     const bookings = await bookingCollection
